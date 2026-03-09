@@ -1,0 +1,36 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v2
+
+    - name: Build Docker image
+      run: docker build -t flask-ci-cd-app .
+
+    - name: Deploy to EC2 via SSH
+      uses: appleboy/ssh-action@v0.1.8
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        port: 22
+        script: |
+          cd ~/flask-cicd-app
+          # Останавливаем старый контейнер, если он есть
+          sudo docker stop flask || true
+          sudo docker rm flask || true
+          # Собираем новый образ
+          sudo docker build -t flask-ci-cd-app .
+          # Запускаем контейнер на порту 5000
+          sudo docker run -d --name flask -p 5000:5000 flask-ci-cd-app
