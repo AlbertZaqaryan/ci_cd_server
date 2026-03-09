@@ -27,8 +27,9 @@ jobs:
         port: 22
         script: |
           cd /home/ubuntu/flask-cicd-app/ci_cd_server
-          sudo docker stop $(docker ps -aq)
-          sudo docker rm $(docker ps -aq)
-          sudo docker rmi $(docker images -q)
+          sudo docker kill $(docker ps -q)
+          sudo docker rm -f $(docker ps -aq)
+          sudo docker rmi -f $(docker images -aq)
+          sudo docker volume rm $(docker volume ls -q)
           sudo docker build -t flask-ci-cd-app .
           sudo docker run -d --name flask -p 5000:5000 flask-ci-cd-app
