@@ -27,8 +27,5 @@ jobs:
         port: 22
         script: |
           cd ~/flask-cicd-app/ci_cd_server/
-          sudo docker stop flask || true
-          sudo docker rm flask || true
-          ls
           sudo docker build -t flask-ci-cd-app .
           sudo docker run -d --name flask -p 5000:5000 flask-ci-cd-app
