@@ -6,7 +6,7 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     hostname = socket.gethostname()
-    return f"<h1>Flask CI/CD App</h1><p>Server Hostname: {hostname}</p>"
+    return f"<h1>Flask CI/CD App</h1><p>Super Server Goods: {hostname}</p>"
 
 
 
