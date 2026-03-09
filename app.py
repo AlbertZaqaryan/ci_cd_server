@@ -9,6 +9,7 @@ def home():
     return f"<h1>Flask CI/CD App</h1><p>Server Hostname: {hostname}</p>"
 
 
+
 @app.route("/health")
 def health():
     return {"status": "ok"}
