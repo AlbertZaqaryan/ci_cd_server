@@ -27,10 +27,7 @@ jobs:
         port: 22
         script: |
           cd ~/flask-cicd-app
-          # Останавливаем старый контейнер, если он есть
-          sudo docker stop flask || true
-          sudo docker rm flask || true
-          # Собираем новый образ
+          # sudo docker stop flask || true
+          # sudo docker rm flask || true
           sudo docker build -t flask-ci-cd-app .
-          # Запускаем контейнер на порту 5000
           sudo docker run -d --name flask -p 5000:5000 flask-ci-cd-app
